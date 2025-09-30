@@ -274,29 +274,32 @@ textarea {
   border-radius: 9999px;
   background: transparent;
   border: none;
-  height: 1px !important;
+  height: 20px !important;
+  cursor: pointer;
 }
 
 .slider-ultra-thin::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  height: 0;
-  width: 0;
-  opacity: 0;
-  pointer-events: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: transparent;
+  cursor: grab;
+  border: none;
 }
 
 .slider-ultra-thin::-moz-range-thumb {
-  height: 0;
-  width: 0;
-  opacity: 0;
-  pointer-events: none;
-  border: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
   background: transparent;
+  cursor: grab;
+  border: none;
 }
 
 .slider-ultra-thin:hover {
-  opacity: 0.8;
+  opacity: 1;
   transition: opacity 0.2s ease;
 }
 
@@ -306,7 +309,16 @@ textarea {
 }
 
 .slider-ultra-thin:active {
-  opacity: 0.9;
+  opacity: 1;
+  cursor: grabbing;
+}
+
+.slider-ultra-thin:active::-webkit-slider-thumb {
+  cursor: grabbing;
+}
+
+.slider-ultra-thin:active::-moz-range-thumb {
+  cursor: grabbing;
 }
 
 /* Ultra-thin thumb styling */

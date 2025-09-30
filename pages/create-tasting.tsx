@@ -288,12 +288,16 @@ const CreateTastingPage: React.FC = () => {
                 <div>
                   <label className="block text-small font-body font-medium text-text-primary mb-xs">
                     Category *
+                    {form.items.length > 0 && (
+                      <span className="ml-2 text-xs text-text-secondary">(Locked after adding items)</span>
+                    )}
                   </label>
                   <select
                     value={form.category}
                     onChange={(e) => setForm(prev => ({ ...prev, category: e.target.value }))}
                     className="form-input w-full"
                     required
+                    disabled={form.items.length > 0}
                   >
                     <option value="">Select a category</option>
                     {CATEGORIES.map(category => (
@@ -307,6 +311,9 @@ const CreateTastingPage: React.FC = () => {
                 <div>
                   <label className="block text-small font-body font-medium text-text-primary mb-xs">
                     Session Name
+                    {form.items.length > 0 && (
+                      <span className="ml-2 text-xs text-text-secondary">(Locked after adding items)</span>
+                    )}
                   </label>
                   <input
                     type="text"
@@ -314,6 +321,7 @@ const CreateTastingPage: React.FC = () => {
                     onChange={(e) => setForm(prev => ({ ...prev, session_name: e.target.value }))}
                     placeholder={`${form.category ? form.category.charAt(0).toUpperCase() + form.category.slice(1) : 'Category'} ${form.mode === 'competition' ? 'Competition' : 'Study'}`}
                     className="form-input w-full"
+                    disabled={form.items.length > 0}
                   />
                 </div>
               </div>

@@ -35,12 +35,15 @@ const TastingItem: React.FC<TastingItemProps> = ({
   const [isUploading, setIsUploading] = useState(false);
   const [localNotes, setLocalNotes] = useState(item.notes || '');
   const [localScore, setLocalScore] = useState(item.overall_score || 0);
+  const [localItemName, setLocalItemName] = useState(item.item_name);
+  const [isEditingName, setIsEditingName] = useState(false);
 
   // Reset local state when item changes
   useEffect(() => {
     setLocalNotes(item.notes || '');
     setLocalScore(item.overall_score || 0);
-  }, [item.id]);
+    setLocalItemName(item.item_name);
+  }, [item.id, item.item_name]);
 
   const getScoreLabel = (score: number): string => {
     if (score >= 90) return '(Exceptional)';
@@ -116,6 +119,20 @@ const TastingItem: React.FC<TastingItemProps> = ({
     onUpdate({ overall_score: score });
   };
 
+  const handleItemNameChange = (name: string) => {
+    setLocalItemName(name);
+  };
+
+  const handleItemNameBlur = () => {
+    if (localItemName.trim() && localItemName !== item.item_name) {
+      onUpdate({ item_name: localItemName.trim() });
+      toast.success('Item name updated');
+    } else if (!localItemName.trim()) {
+      setLocalItemName(item.item_name);
+    }
+    setIsEditingName(false);
+  };
+
   const removePhoto = async () => {
     if (!item.photo_url) return;
 
@@ -166,9 +183,36 @@ const TastingItem: React.FC<TastingItemProps> = ({
         <div className="flex items-center space-x-sm min-w-0 flex-1">
           <div className="flex items-center justify-center w-10 h-10 tablet:w-12 tablet:h-12 flex-shrink-0">{getCategoryIcon(category)}</div>
           <div className="min-w-0 flex-1">
-            <h3 className="text-lg tablet:text-h4 font-heading font-semibold text-text-primary truncate">
-              {isBlindItems ? `Item ${item.id.slice(-4)}` : item.item_name}
-            </h3>
+            {isBlindItems ? (
+              <h3 className="text-lg tablet:text-h4 font-heading font-semibold text-text-primary truncate">
+                Item {item.id.slice(-4)}
+              </h3>
+            ) : isEditingName ? (
+              <input
+                type="text"
+                value={localItemName}
+                onChange={(e) => handleItemNameChange(e.target.value)}
+                onBlur={handleItemNameBlur}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleItemNameBlur();
+                  } else if (e.key === 'Escape') {
+                    setLocalItemName(item.item_name);
+                    setIsEditingName(false);
+                  }
+                }}
+                autoFocus
+                className="text-lg tablet:text-h4 font-heading font-semibold text-text-primary w-full border-b-2 border-primary bg-transparent focus:outline-none"
+              />
+            ) : (
+              <h3
+                className="text-lg tablet:text-h4 font-heading font-semibold text-text-primary truncate cursor-pointer hover:text-primary transition-colors"
+                onClick={() => setIsEditingName(true)}
+                title="Click to edit item name"
+              >
+                {item.item_name}
+              </h3>
+            )}
             <p className="text-xs tablet:text-small font-body text-text-secondary">
               {category.charAt(0).toUpperCase() + category.slice(1)} Tasting
               {isBlindItems && ' • Blind Tasting'}

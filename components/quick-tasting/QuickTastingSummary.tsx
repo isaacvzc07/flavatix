@@ -187,7 +187,7 @@ const QuickTastingSummary: React.FC<QuickTastingSummaryProps> = ({
         </div>
         <div className="card p-md text-center">
           <div className="text-h1 font-heading font-bold text-warning text-primary mb-xs">
-            {averageScore > 0 ? `${averageScore}/5` : 'N/A'}
+            {averageScore > 0 ? `${averageScore}/100` : 'N/A'}
           </div>
           <div className="text-text-secondary">Average Score</div>
         </div>
@@ -286,7 +286,7 @@ const QuickTastingSummary: React.FC<QuickTastingSummaryProps> = ({
                             key={flavor}
                             className="px-sm py-xs bg-primary/10 text-primary rounded-full text-small font-body font-medium"
                           >
-                            {flavor} ({score}/5)
+                            {flavor} ({score}/100)
                           </div>
                         ))}
                       </div>
